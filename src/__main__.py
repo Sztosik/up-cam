@@ -16,14 +16,17 @@ def playVideo():
 
     if not vid.isOpened():
         print("Video not opened")
+        return
 
     while True:
         ret, frame = vid.read()
         if not ret:
+            cv2.destroyWindow("Video player")
             return
 
         cv2.imshow("Video player", frame)
         if cv2.waitKey(2500 // FPS) & 0xFF == ord("q"):
+            cv2.destroyWindow("Video player")
             return
 
 
