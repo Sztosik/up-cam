@@ -7,6 +7,17 @@ import numpy as np
 WINDOW_NAME = "Main"
 record_state = False
 
+def playVideo():
+    vid = cv2.VideoCapture('videos/vid_1704974220.avi')
+    
+    if not vid.isOpened():
+        print("Video not opened")
+    
+    ret, frame = vid.read(1)
+    while ret:
+        cv2.imshow("Video player", frame)
+        
+    return
 
 def white_balance(img, factor):
     result = cv2.cvtColor(img, cv2.COLOR_BGR2LAB)
@@ -142,6 +153,8 @@ while True:
             )
             record_state = True
 
+    if key & 0xFF == ord('p'):
+        playVideo()
 
 camera.release()
 cv2.destroyAllWindows()
