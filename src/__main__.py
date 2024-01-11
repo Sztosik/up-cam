@@ -7,10 +7,10 @@ import numpy as np
 WINDOW_NAME = "Main"
 
 
-def white_balance(img):
+def white_balance(img, factor):
     result = cv2.cvtColor(img, cv2.COLOR_BGR2LAB)
-    avg_a = np.average(result[:, :, 1])
-    avg_b = np.average(result[:, :, 2])
+    avg_a = np.average(result[:, :, 1]) * (factor / 50)
+    avg_b = np.average(result[:, :, 2]) * (factor / 50)
     result[:, :, 1] = result[:, :, 1] - (
         (avg_a - 128) * (result[:, :, 0] / 255.0) * 1.1
     )
@@ -25,12 +25,14 @@ def empty(x):
     pass
 
 
-def BrightnessContrast(img, brightness=0):
+def applyEffects(img, brightness=0):
     # getTrackbarPos returns the current
     # position of the specified trackbar.
     brightness = cv2.getTrackbarPos("Brightness", WINDOW_NAME)
     contrast = cv2.getTrackbarPos("Contrast", WINDOW_NAME)
     effect = controller(img, brightness, contrast)
+    wb = cv2.getTrackbarPos("WhiteBalance", WINDOW_NAME)
+    effect = white_balance(effect, wb)
     # The function imshow displays an image
     # in the specified window
     return effect
@@ -98,20 +100,20 @@ cv2.createTrackbar("Brightness", WINDOW_NAME, 255, 2 * 255, empty)
 # Contrast range -127 to 127
 cv2.createTrackbar("Contrast", WINDOW_NAME, 127, 2 * 127, empty)
 
+cv2.createTrackbar("WhiteBalance", WINDOW_NAME, 50, 100, empty)
+
 while True:
     # Capture the video frame by frame
     ret, frame = camera.read()
 
     # Display the resulting frame
     # cv2.imshow(WINDOW_NAME, frame)
-    efect = BrightnessContrast(frame, 0)
+    efect = applyEffects(frame, 0)
 
     org = efect.copy()
-    cv2.imshow("orginal", org)
+    cv2.imshow(WINDOW_NAME, org)
 
-    efect = white_balance(efect)
-
-    cv2.imshow(WINDOW_NAME, efect)
+    # cv2.imshow(WINDOW_NAME, efect)
 
     video_out.write(frame)
 
