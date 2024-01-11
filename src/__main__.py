@@ -107,7 +107,6 @@ while True:
     if live_source:
         ret, frame = camera.read()
     else:
-        # sleep(0.1)
         ret, frame = cap.read()
 
     # Display the resulting frame
