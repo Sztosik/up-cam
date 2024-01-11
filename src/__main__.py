@@ -14,14 +14,15 @@ def playVideo():
     
     if not vid.isOpened():
         print("Video not opened")
-    
-    ret, frame = vid.read()
-    while ret:
+     
+    while True:
+        ret, frame = vid.read()
+        if not ret:
+            return
+        
         cv2.imshow("Video player", frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
-            return
-
-    return
+            return 
 
 def white_balance(img, factor):
     result = cv2.cvtColor(img, cv2.COLOR_BGR2LAB)
