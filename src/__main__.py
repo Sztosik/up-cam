@@ -65,7 +65,10 @@ def controller(img, brightness=255, contrast=127):
 
 
 # define a video capture object
-camera = cv2.VideoCapture(0)
+
+camera = cv2.VideoCapture(2)
+if not camera.isOpened():
+    camera = cv2.VideoCapture(0)
 
 ret, frame = camera.read()
 
