@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Competition code for `Martian Mines` for Droniad 2024 competition"
 authors = ["Jędrzej Stasik <jedrzej.stasik@gmail.com>"]
 readme = "README.md"
-packages = [{include = "martian_mines"}]
+packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.9"
@@ -24,12 +24,12 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.taskipy.tasks]
 formatting = "python -m black . && python -m isort ."
-pylint = "pylint martian_mines tests"
-mypy = "python -m mypy --namespace-packages martian_mines tests examples"
-flake8 = "poetry run python -m flake8 martian_mines tests examples && echo All is ok"
+pylint = "pylint src tests"
+mypy = "python -m mypy --namespace-packages src"
+flake8 = "poetry run python -m flake8 src && echo All is ok"
 
-black_check = "black --check martian_mines tests examples"
-isort_check = "isort --check martian_mines tests examples"
+black_check = "black --check src"
+isort_check = "isort --check src"
 
 [tool.isort]
 profile = "black"
