@@ -1,11 +1,14 @@
 from ctypes.wintypes import RGB
-from time import time
+from time import sleep, time
 
 import cv2
 import numpy as np
 
+from .files import get_last_video_path
+
 WINDOW_NAME = "Main"
 record_state = False
+live_source = True
 
 
 def white_balance(img, factor):
@@ -88,7 +91,6 @@ camera = cv2.VideoCapture(2)
 if not camera.isOpened():
     camera = cv2.VideoCapture(0)
 
-ret, frame = camera.read()
 
 cv2.namedWindow(WINDOW_NAME)
 
@@ -102,7 +104,11 @@ cv2.createTrackbar("WhiteBalance", WINDOW_NAME, 50, 100, empty)
 
 while True:
     # Capture the video frame by frame
-    ret, frame = camera.read()
+    if live_source:
+        ret, frame = camera.read()
+    else:
+        # sleep(0.1)
+        ret, frame = cap.read()
 
     # Display the resulting frame
     # cv2.imshow(WINDOW_NAME, frame)
@@ -141,6 +147,11 @@ while True:
                 f"videos/vid_{int(time())}.avi", fourcc, 20.0, (640, 480)
             )
             record_state = True
+
+    if key & 0xFF == ord("p"):
+        last_video = get_last_video_path()
+        cap = cv2.VideoCapture(str(last_video))
+        live_source = False
 
 
 camera.release()
