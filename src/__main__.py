@@ -5,6 +5,7 @@ import cv2
 import numpy as np
 
 WINDOW_NAME = "Main"
+record_state = False
 
 
 def white_balance(img, factor):
@@ -89,9 +90,6 @@ if not camera.isOpened():
 
 ret, frame = camera.read()
 
-fourcc = cv2.VideoWriter_fourcc(*"XVID")
-video_out = cv2.VideoWriter("output.avi", fourcc, 20.0, (640, 480))
-
 cv2.namedWindow(WINDOW_NAME)
 
 # Brightness range -255 to 255
@@ -114,8 +112,8 @@ while True:
     cv2.imshow(WINDOW_NAME, org)
 
     # cv2.imshow(WINDOW_NAME, efect)
-
-    video_out.write(frame)
+    if record_state:
+        video_out.write(efect)
 
     # the 'q' button is set as the
     # quitting button you may use any
@@ -130,7 +128,20 @@ while True:
         cv2.imwrite(f"img/img_{int(time())}.png", efect)
         print(f"saved as img_{int(time())}.png")
 
+    # press 'r' to start / stop recording
+    if key & 0xFF == ord("r"):
+        if record_state:
+            print("REC Stopped")
+            video_out.release()
+            record_state = False
+        else:
+            print("REC Started")
+            fourcc = cv2.VideoWriter_fourcc(*"XVID")
+            video_out = cv2.VideoWriter(
+                f"videos/vid_{int(time())}.avi", fourcc, 20.0, (640, 480)
+            )
+            record_state = True
 
-video_out.release()
+
 camera.release()
 cv2.destroyAllWindows()
