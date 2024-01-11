@@ -6,6 +6,7 @@ import numpy as np
 
 from .files import get_last_video_path
 
+FPS = 60
 WINDOW_NAME = "Main"
 record_state = False
 
@@ -21,7 +22,7 @@ def playVideo():
             return
         
         cv2.imshow("Video player", frame)
-        if cv2.waitKey(1) & 0xFF == ord('q'):
+        if cv2.waitKey(2500//FPS) & 0xFF == ord('q'):
             return 
 
 def white_balance(img, factor):
@@ -154,7 +155,7 @@ while True:
             print("REC Started")
             fourcc = cv2.VideoWriter_fourcc(*"XVID")
             video_out = cv2.VideoWriter(
-                f"videos/vid_{int(time())}.avi", fourcc, 20.0, (640, 480)
+                f"videos/vid_{int(time())}.avi", fourcc, FPS, (640, 480)
             )
             record_state = True
 
