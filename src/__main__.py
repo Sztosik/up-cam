@@ -1,3 +1,5 @@
+from time import time
+
 import cv2
 
 # define a video capture object
@@ -13,10 +15,16 @@ while True:
     # the 'q' button is set as the
     # quitting button you may use any
     # desired button of your choicee
-    if cv2.waitKey(1) & 0xFF == ord("q"):
+    key = cv2.waitKey(1)
+
+    if key & 0xFF == ord("q"):
         break
-    if cv2.waitKey(1) == ord("s"):
-        cv2.imwrite('image.png', frame)
+
+    # press 's' to capture the photo
+    if key & 0xFF == ord("s"):
+        cv2.imwrite(f"img/img_{int(time())}.png", frame)
+        print(f"saved as img_{int(time())}.png")
+
 
 camera.release()
 cv2.destroyAllWindows()
