@@ -4,19 +4,23 @@ from time import time
 import cv2
 import numpy as np
 
+from .files import get_last_video_path
+
 WINDOW_NAME = "Main"
 record_state = False
 
 def playVideo():
-    vid = cv2.VideoCapture('videos/vid_1704974220.avi')
+    vid = cv2.VideoCapture(str(get_last_video_path()))
     
     if not vid.isOpened():
         print("Video not opened")
     
-    ret, frame = vid.read(1)
+    ret, frame = vid.read()
     while ret:
         cv2.imshow("Video player", frame)
-        
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            return
+
     return
 
 def white_balance(img, factor):
