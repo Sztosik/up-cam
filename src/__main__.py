@@ -10,20 +10,22 @@ FPS = 60
 WINDOW_NAME = "Main"
 record_state = False
 
+
 def playVideo():
     vid = cv2.VideoCapture(str(get_last_video_path()))
-    
+
     if not vid.isOpened():
         print("Video not opened")
-     
+
     while True:
         ret, frame = vid.read()
         if not ret:
             return
-        
+
         cv2.imshow("Video player", frame)
-        if cv2.waitKey(2500//FPS) & 0xFF == ord('q'):
-            return 
+        if cv2.waitKey(2500 // FPS) & 0xFF == ord("q"):
+            return
+
 
 def white_balance(img, factor):
     result = cv2.cvtColor(img, cv2.COLOR_BGR2LAB)
@@ -159,7 +161,7 @@ while True:
             )
             record_state = True
 
-    if key & 0xFF == ord('p'):
+    if key & 0xFF == ord("p"):
         playVideo()
 
 camera.release()
