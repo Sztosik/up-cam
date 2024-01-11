@@ -12,9 +12,11 @@ while True:
 
     # the 'q' button is set as the
     # quitting button you may use any
-    # desired button of your choice
+    # desired button of your choicee
     if cv2.waitKey(1) & 0xFF == ord("q"):
         break
+    if cv2.waitKey(1) == ord("s"):
+        cv2.imwrite('image.png', frame)
 
 camera.release()
 cv2.destroyAllWindows()
